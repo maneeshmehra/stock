@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: stock-api
+  name: stock-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: stock-api
+    spec:
+      containers:
+      - image: stock-api
+        name: stock-api
+        imagePullPolicy: Never
+        resources: {}
+        ports:
+          - containerPort: 8080
+status: {}
