@@ -47,6 +47,7 @@ spec:
         - "buildah"
       args:
         - "bud"
+        - "--layers"
         - "-f"
         - $(inputs.params.docker-file)
         - "--storage-driver=vfs"
