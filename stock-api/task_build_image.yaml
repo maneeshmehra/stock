@@ -17,6 +17,10 @@ spec:
       - name: container-image
         description: Name of the container image to use
         default: stock-api
+      - name: tlsVerify
+        description: tls verify
+        type: string
+        default: "false"        
   steps:
     - name: list-project-folder
       image: busybox
