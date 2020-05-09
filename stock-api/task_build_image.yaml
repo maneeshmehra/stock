@@ -46,6 +46,7 @@ spec:
         - "--layers"
         - "-f"
         - $(inputs.params.docker-file)
+        - "--storage-driver=vfs"
         - "-t"
         - $(inputs.params.container-image)
         - "."
