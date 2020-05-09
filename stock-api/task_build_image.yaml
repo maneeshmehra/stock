@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-stock-api-image
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+    params:
+      - name: context-dir
+        description: The context dir of the project containing the Maven pom.xml file
+        default: stock-api
+      - name: docker-file
+        description: Name of the Docker file to use
+        default: Dockerfile
+      - name: container-image
+        description: Name of the container image to use
+        default: stock-api
+  steps:
+    - name: list-project-folder
+      image: busybox
+      command: ["ls", "-ltr", "/workspace/source/$(inputs.params.context-dir)"]
+    - name: check-if-maven-is-installed-or-not
+      image: docker.io/maven:3.6.3-openjdk-15
+      command: ["mvn", "--version"]
+    - name: build-jar-file
+      image: docker.io/maven:3.6.3-openjdk-15
+      workingDir: "/workspace/source/$(inputs.params.context-dir)"
+      command: ["mvn", "clean", "package", "-DskipTests"]
+    - name: list-project-folder-after-build
+      image: quay.io/buildah/stable
+      workingDir: "/workspace/source/$(inputs.params.context-dir)"
+      command:
+        - "ls"
+      args:
+        - "-alR"
+        - "."      
+    - name: build-container-image
+      image: quay.io/buildah/stable
+      workingDir: "/workspace/source/$(inputs.params.context-dir)"
+      command:
+        - "buildah"
+      args:
+        - "bud"
+        - "--layers"
+        - "-f"
+        - $(inputs.params.docker-file)
+        - "-t"
+        - $(inputs.params.container-image)
+        - "."
+      securityContext:
+        runAsUser: 0
+        privileged: true

@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: git-source-stock-api
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/maneeshmehra/stock
+    - name: revision
+      value: master
