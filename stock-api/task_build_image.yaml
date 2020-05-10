@@ -44,7 +44,11 @@ spec:
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       command:
-        - "buildah bud --layers -f $(inputs.params.docker-file) --storage-driver=vfs -t $(inputs.params.container-image) . && buildah images"
+        - sh
+        - -c
+        - "cd /workspace/source/$(inputs.params.context-dir) && \
+           buildah bud --layers -f $(inputs.params.docker-file) --storage-driver=vfs -t $(inputs.params.container-image) . \
+           && buildah images"
       securityContext:
         runAsUser: 0
         privileged: true
