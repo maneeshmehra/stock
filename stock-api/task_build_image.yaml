@@ -20,7 +20,11 @@ spec:
       - name: tlsVerify
         description: tls verify
         type: string
-        default: "false"        
+        default: "false"
+  outputs:
+    resources:
+      - name: docker-image
+        type: image              
   steps:
     - name: list-project-folder
       image: busybox
@@ -79,7 +83,7 @@ spec:
         - "push"
         - "--tls-verify=$(inputs.params.tlsVerify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://$(inputs.params.container-image)"
+        - "docker://${outputs.resources.docker-image.url}"
       securityContext:
         runAsUser: 0
         privileged: true
