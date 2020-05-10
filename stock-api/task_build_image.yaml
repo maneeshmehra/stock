@@ -20,11 +20,7 @@ spec:
       - name: tlsVerify
         description: tls verify
         type: string
-        default: "false"
-  outputs:
-    resources:
-      - name: docker-image
-        type: image              
+        default: "false"             
   steps:
     - name: list-project-folder
       image: busybox
@@ -48,16 +44,7 @@ spec:
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       command:
-        - "buildah"
-      args:
-        - "bud"
-        - "--layers"
-        - "-f"
-        - $(inputs.params.docker-file)
-        - "--storage-driver=vfs"
-        - "-t"
-        - $(inputs.params.container-image)
-        - "."
+        - "buildah bud --layers -f $(inputs.params.docker-file) --storage-driver=vfs -t $(inputs.params.container-image) . && buildah images"
       securityContext:
         runAsUser: 0
         privileged: true
@@ -83,7 +70,7 @@ spec:
         - "push"
         - "--tls-verify=$(inputs.params.tlsVerify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://${outputs.resources.docker-image.url}"
+        - "docker://$(input.params.container-image)"
       securityContext:
         runAsUser: 0
         privileged: true
