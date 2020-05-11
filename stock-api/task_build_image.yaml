@@ -47,7 +47,7 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud --layers -f $(inputs.params.docker-file) --storage-driver=vfs -t $(inputs.params.container-image) . \
+           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
            && buildah images"
       securityContext:
         runAsUser: 0
@@ -74,7 +74,7 @@ spec:
         - "push"
         - "--tls-verify=$(inputs.params.tlsVerify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://$(input.params.container-image)"
+        - "docker://${input.params.container-image}"
       securityContext:
         runAsUser: 0
         privileged: true
