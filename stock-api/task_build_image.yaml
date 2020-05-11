@@ -47,7 +47,7 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
+           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) --storage-driver=vfs . \
            && buildah images"
       securityContext:
         runAsUser: 0
