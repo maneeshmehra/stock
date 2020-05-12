@@ -49,8 +49,6 @@ spec:
       volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
-      - name: dockerfile-storage
-        mountPath: /workspace
   volumes:
     - name: kaniko-secret
       secret:
