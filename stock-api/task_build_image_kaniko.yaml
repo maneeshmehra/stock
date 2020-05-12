@@ -43,7 +43,7 @@ spec:
     - name: build-container-image
       image: gcr.io/kaniko-project/executor:latest
       args: ["--dockerfile=$(inputs.params.docker-file)",
-             "--context=dir:///workspace/source/$(inputs.params.context-dir)",
+             "--context=dir://workspace/source/$(inputs.params.context-dir)",
              "--destination=mmehra/$(inputs.params.container-image)"] # replace with your dockerhub account
       volumeMounts:
       - name: kaniko-secret
