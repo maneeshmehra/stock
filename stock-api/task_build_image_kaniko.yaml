@@ -44,7 +44,8 @@ spec:
       image: gcr.io/kaniko-project/executor:latest
       args: ["--dockerfile=/workspace/source/stock-api/Dockerfile",
              "--context=dir:///workspace/source/stock-api",
-             "--destination=mmehra/stock-api"] # replace with your dockerhub account
+             "--destination=mmehra/stock-api",
+             "--verbosity=debug"] # replace with your dockerhub account
       volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
