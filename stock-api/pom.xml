@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example.stock</groupId>
 	<artifactId>api</artifactId>
-	<version>1.0</version>
+	<version>${buildId}</version>
 	<name>stock-api</name>
 	<description>Stock Checker API</description>
 
