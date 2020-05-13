@@ -43,10 +43,10 @@ spec:
     - name: build-jar-file
       image: docker.io/maven:3.6.3-openjdk-15
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      # command: ["mvn", "-DbuildId=$(inputs.params.base-version)-$(tasks.results.timestamp.path)", "clean", "package", "-DskipTests"]
+      # command: ["mvn", "-DbuildId=$(inputs.params.base-version)-$(results.timestamp.path)", "clean", "package", "-DskipTests"]
       script: |
          #!/usr/bin/env bash
-         ts=`cat $(tasks.results.timestamp.path)`
+         ts=`cat $(results.timestamp.path)`
          buildId=$(inputs.params.base-version)-$ts
          echo "Build ID: ${buildId}"
          cmd="mvn --DbuildId=${buildId} clean package -DskipTests"
