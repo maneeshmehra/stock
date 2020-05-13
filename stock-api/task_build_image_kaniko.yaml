@@ -65,11 +65,14 @@ spec:
       #       "--destination=mmehra/stock-api",
       #       "--verbosity=debug"] # replace with your dockerhub account
       script: |
-         /bin/sh -c "/kaniko/executor \
+         #!/bin/sh
+         tagId=`cat $(results.buildId.path)`
+         echo "Container Image Tag ID: ${tagId}"
+         /kaniko/executor \
          --dockerfile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.docker-file) \
          --context=dir:///workspace/source/$(inputs.params.context-dir) \
-         --destination=mmehra/stock-api \
-         --verbosity=debug"  
+         --destination=mmehra/stock-api:${tagId} \
+         --verbosity=debug 
       volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
