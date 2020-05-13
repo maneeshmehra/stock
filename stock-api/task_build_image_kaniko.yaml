@@ -24,8 +24,16 @@ spec:
       - name: base-version
         description: Base product version
         type: string
-        default: "1.0"              
+        default: "1.0"
+  results:
+    - name: timestamp
+      description: Current timestamp                   
   steps:
+    - name: print-date-unix-timestamp
+      image: bash:latest
+      script: |
+        #!/usr/bin/env bash
+        date +%s | tee $(results.timestamp.path)
     - name: list-project-folder
       image: busybox
       command: ["ls", "-ltr", "/workspace/source/$(inputs.params.context-dir)"]
@@ -35,7 +43,7 @@ spec:
     - name: build-jar-file
       image: docker.io/maven:3.6.3-openjdk-15
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command: ["mvn", "-DbuildId=$(inputs.params.base-version)", "clean", "package", "-DskipTests"]
+      command: ["mvn", "-DbuildId=$(inputs.params.base-version)-$(results.timestamp)", "clean", "package", "-DskipTests"]
     - name: list-project-folder-after-build
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
