@@ -65,12 +65,11 @@ spec:
       #       "--destination=mmehra/stock-api",
       #       "--verbosity=debug"] # replace with your dockerhub account
       script: |
-         #!/usr/bin/env bash
-         /kaniko/executor \
+         /bin/sh -c "/kaniko/executor \
          --dockerfile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.docker-file) \
          --context=dir:///workspace/source/$(inputs.params.context-dir) \
          --destination=mmehra/stock-api \
-         --verbosity=debug  
+         --verbosity=debug"  
       volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
