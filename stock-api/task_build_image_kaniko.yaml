@@ -29,7 +29,7 @@ spec:
     - name: timestamp
       description: Current timestamp                   
   steps:
-    - name: print-date-unix-timestamp
+    - name: get-timestamp
       image: bash:latest
       script: |
         #!/usr/bin/env bash
@@ -43,7 +43,15 @@ spec:
     - name: build-jar-file
       image: docker.io/maven:3.6.3-openjdk-15
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command: ["mvn", "-DbuildId=$(inputs.params.base-version)-$(results.timestamp)", "clean", "package", "-DskipTests"]
+      # command: ["mvn", "-DbuildId=$(inputs.params.base-version)-$(tasks.results.timestamp.path)", "clean", "package", "-DskipTests"]
+      script: |
+         #!/usr/bin/env bash
+         ts=`cat $(tasks.results.timestamp.path)`
+         buildId=$(inputs.params.base-version)-$ts
+         echo "Build ID: ${buildId}"
+         cmd="mvn --DbuildId=${buildId} clean package -DskipTests"
+         echo "Command: ${cmd}"
+         ${cmd}
     - name: list-project-folder-after-build
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
