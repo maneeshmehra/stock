@@ -75,7 +75,8 @@ spec:
       command:
         - "buildah"
       args:
-        - "push --storage-driver=vfs"
+        - "push"
+        - "--storage-driver=vfs"
         - "--tls-verify=$(inputs.params.tls-verify)"
         - "$(inputs.params.container-image):latest"
         - "docker://${input.params.container-image}"
