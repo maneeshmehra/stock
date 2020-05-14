@@ -64,6 +64,7 @@ spec:
       #       "--context=dir:///workspace/source/$(inputs.params.context-dir)",
       #       "--destination=mmehra/stock-api",
       #       "--verbosity=debug"] # replace with your dockerhub account
+      entrypoint: [""]
       script: |
          #!/bin/sh
          tagId=`cat $(results.buildId.path)`
