@@ -59,13 +59,12 @@ spec:
          echo "Command: ${cmd}"
          ${cmd}    
     - name: build-container-image
-      image: gcr.io/kaniko-project/executor:latest
+      image: gcr.io/kaniko-project/executor:debug
       #args: ["--dockerfile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.docker-file)",
       #       "--context=dir:///workspace/source/$(inputs.params.context-dir)",
       #       "--destination=mmehra/stock-api",
       #       "--verbosity=debug"] # replace with your dockerhub account
       script: |
-         #!/usr/bin/env bash
          tagId=`cat $(results.buildId.path)`
          echo "Container Image Tag ID: ${tagId}"
          /kaniko/executor \
