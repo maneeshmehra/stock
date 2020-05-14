@@ -47,7 +47,7 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
+           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers --storage-driver=vfs -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
            && buildah images"
       securityContext:
         runAsUser: 0
