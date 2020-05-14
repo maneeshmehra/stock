@@ -47,11 +47,14 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) --storage-driver=vfs . \
+           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
            && buildah images"
       securityContext:
         runAsUser: 0
         privileged: true
+      volumeMounts:
+        - name: varlibc
+          mountPath: /var/lib/containers        
     - name: list-image
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
