@@ -75,7 +75,7 @@ spec:
         - "buildah"
       args:
         - "push"
-        - "--tls-verify=$(inputs.params.tlsVerify)"
+        - "--tls-verify=$(inputs.params.tls-verify)"
         - "$(inputs.params.container-image):latest"
         - "docker://${input.params.container-image}"
       securityContext:
