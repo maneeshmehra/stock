@@ -61,7 +61,8 @@ spec:
       command:
         - "buildah"
       args:
-        - "images --storage-driver=vfs"
+        - "images"
+        - "--storage-driver=vfs"
       securityContext:
         runAsUser: 0
         privileged: true
