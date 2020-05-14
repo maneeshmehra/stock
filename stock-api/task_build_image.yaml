@@ -17,7 +17,7 @@ spec:
       - name: container-image
         description: Name of the container image to use
         default: stock-api
-      - name: tlsVerify
+      - name: tls-verify
         description: tls verify
         type: string
         default: "false"             
@@ -47,7 +47,7 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
+           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
            && buildah images"
       securityContext:
         runAsUser: 0
