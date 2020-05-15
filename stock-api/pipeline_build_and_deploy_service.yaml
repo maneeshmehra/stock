@@ -4,10 +4,8 @@ metadata:
   name: pipeline-build-and-deploy-stock-api-service
 spec:
   resources:
-    - name: source-repo
+    - name: git-source-stock-api
       type: git
-    - name: web-image
-      type: image
   tasks:
     - name: build--and-deploy-stock-api
       taskRef:
