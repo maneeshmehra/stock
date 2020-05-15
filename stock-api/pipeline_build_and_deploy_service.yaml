@@ -4,7 +4,7 @@ metadata:
   name: pipeline-build-and-deploy-stock-api-service
 spec:
   params:
-    - name: service-base-version
+    - name: service-version
       type: string
   resources:
     - name: source-repo
@@ -13,10 +13,9 @@ spec:
     - name: get-build-id-stock-api
       taskRef:
         name: generate-build-id
-      params:
-        inputs:
-          - name: base-version
-            param: service-base-version
+      params:  
+        - name: base-version
+          value: $(params.service-version)
     - name: build-stock-api
       taskRef:
         name: build-stock-api-image

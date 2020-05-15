@@ -6,7 +6,7 @@ spec:
   pipelineRef:
     name: pipeline-build-and-deploy-stock-api-service
   params:
-    - name: service-base-version
+    - name: service-version
       value: "1.0.1"  
   resources:
     - name: source-repo
