@@ -47,8 +47,7 @@ spec:
         - sh
         - -c
         - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers --storage-driver=vfs -f $(inputs.params.docker-file) -t $(inputs.params.container-image) . \
-           && buildah images --storage-driver=vfs"
+           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers --storage-driver=vfs -f $(inputs.params.docker-file) -t $(inputs.params.container-image) ."
       securityContext:
         runAsUser: 0
         privileged: true
@@ -70,6 +69,9 @@ spec:
         - name: varlibc
           mountPath: /var/lib/containers        
     - name: push-image
+      env:
+      - name: REGISTRY_AUTH_FILE
+        value: /workspace/.docker/config.json    
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       command:
@@ -79,13 +81,21 @@ spec:
         - "--storage-driver=vfs"
         - "--tls-verify=$(inputs.params.tls-verify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://${input.params.container-image}"
+        - "docker://docker.io/mmehra/${input.params.container-image}:latest"
       securityContext:
         runAsUser: 0
         privileged: true
       volumeMounts:
         - name: varlibc
-          mountPath: /var/lib/containers
+          mountPath: /var/lib/containers 
+        - name: docker-secret
+          mountPath: /workspace/.docker                  
   volumes:
     - name: varlibc
       emptyDir: {}
+    - name: docker-secret
+      secret:
+        secretName: regcred
+        items:
+          - key: .dockerconfigjson
+            path: config.json      
