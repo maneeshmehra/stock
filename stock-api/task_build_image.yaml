@@ -98,7 +98,7 @@ spec:
       script: |
         #!/usr/bin/env bash
         buildId=`cat $(results.buildId.path)`
-        buildah push \"
+        buildah push \
         --storage-driver=vfs \
         --tls-verify=$(inputs.params.tls-verify) \
         $(inputs.params.container-image):${buildId} \
