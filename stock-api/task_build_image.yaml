@@ -18,7 +18,7 @@ spec:
         description: Name of the container image to use
         default: stock-api
       - name: tls-verify
-        description: tls verify
+        description: TLS Verify
         type: string
         default: "false"
       - name: base-version
@@ -107,7 +107,7 @@ spec:
         - "--storage-driver=vfs"
         - "--tls-verify=$(inputs.params.tls-verify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://docker.io/mmehra/${inputs.params.container-image}:latest"
+        - "docker://docker.io/mmehra/$(inputs.params.container-image):latest"
       securityContext:
         runAsUser: 0
         privileged: true
