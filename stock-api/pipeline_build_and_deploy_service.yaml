@@ -20,8 +20,8 @@ spec:
       taskRef:
         name: build-stock-api-image
       params:
-        name: build-id
-        value: "$(tasks.get-build-id-stock-api.build-id)"  
+        - name: build-id
+          value: "$(tasks.get-build-id-stock-api.build-id)"  
       resources:
         inputs:
           - name: source
