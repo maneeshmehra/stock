@@ -57,23 +57,18 @@ spec:
          buildId=`cat $(results.buildId.path)`
          cmd="mvn -DbuildId=${buildId} -DskipTests -ntp clean package"
          echo "Command: ${cmd}"
-         ${cmd}
-    - name: list-project-folder-after-build
-      image: quay.io/buildah/stable
-      workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command:
-        - "ls"
-      args:
-        - "-alR"
-        - "."      
+         ${cmd}    
     - name: build-container-image
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command:
-        - sh
-        - -c
-        - "cd /workspace/source/$(inputs.params.context-dir) && \
-           buildah bud --tls-verify=$(inputs.params.tls-verify) --layers --storage-driver=vfs -f $(inputs.params.docker-file) -t $(inputs.params.container-image) ."
+      script: |
+        #!/usr/bin/env bash
+        buildId=`cat $(results.buildId.path)`
+        cd /workspace/source/$(inputs.params.context-dir)
+        buildah bud --tls-verify=$(inputs.params.tls-verify) \
+          --layers --storage-driver=vfs \
+          -f $(inputs.params.docker-file) \
+          -t $(inputs.params.container-image):${buildId} .
       securityContext:
         runAsUser: 0
         privileged: true
@@ -100,14 +95,14 @@ spec:
         value: /workspace/.docker/config.json    
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command:
-        - "buildah"
-      args:
-        - "push"
-        - "--storage-driver=vfs"
-        - "--tls-verify=$(inputs.params.tls-verify)"
-        - "$(inputs.params.container-image):latest"
-        - "docker://docker.io/mmehra/$(inputs.params.container-image):latest"
+      script: |
+        #!/usr/bin/env bash
+        buildId=`cat $(results.buildId.path)`
+        buildah push \"
+        --storage-driver=vfs \
+        --tls-verify=$(inputs.params.tls-verify) \
+        $(inputs.params.container-image):${buildId} \
+        docker://docker.io/mmehra/$(inputs.params.container-image):${buildId}
       securityContext:
         runAsUser: 0
         privileged: true
