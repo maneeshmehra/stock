@@ -7,7 +7,13 @@ spec:
     - name: source-repo
       type: git
   tasks:
-    - name: build--and-deploy-stock-api
+    - name: get-build-id-stock-api
+      taskRef:
+        name: generate-build-id
+      resources:
+        - name: base-version
+          value: "1.0.1"  
+    - name: build-stock-api
       taskRef:
         name: build-stock-api-image
       resources:
