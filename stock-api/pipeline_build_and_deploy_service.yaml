@@ -11,8 +11,9 @@ spec:
       taskRef:
         name: generate-build-id
       resources:
-        - name: base-version
-          value: "1.0.1"  
+        inputs:
+          - name: base-version
+            value: "1.0.1"
     - name: build-stock-api
       taskRef:
         name: build-stock-api-image
