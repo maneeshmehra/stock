@@ -4,7 +4,7 @@ metadata:
   name: pipeline-build-and-deploy-stock-api-service
 spec:
   resources:
-    - name: git-source-stock-api
+    - name: source-repo
       type: git
   tasks:
     - name: build--and-deploy-stock-api
@@ -13,4 +13,4 @@ spec:
       resources:
         inputs:
           - name: source
-            resource: git-source-stock-api
+            resource: source-repo

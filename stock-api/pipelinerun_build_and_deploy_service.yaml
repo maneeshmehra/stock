@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: pipelinerun-build-and-deploy-stock-api-service
+spec:
+  pipelineRef:
+    name: pipeline-build-and-deploy-stock-api-service
+  resources:
+    - name: source-repo
+      resourceRef:
+        name: git-source-stock-api
