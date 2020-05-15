@@ -11,8 +11,7 @@ spec:
         default: "1.0"
   outputs:
      resources:
-       - name: build-id
-         type: storage   
+       - name: build-id   
   results:
     - name: timestamp
       description: Current timestamp

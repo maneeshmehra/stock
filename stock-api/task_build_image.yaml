@@ -7,8 +7,7 @@ spec:
     resources:
       - name: source
         type: git
-      - name: build-id
-        type: storage  
+      - name: build-id 
     params:
       - name: context-dir
         description: The context dir of the project containing the Maven pom.xml file
