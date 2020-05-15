@@ -7,6 +7,8 @@ spec:
     resources:
       - name: source
         type: git
+      - name: build-id
+        type: storage  
     params:
       - name: context-dir
         description: The context dir of the project containing the Maven pom.xml file
@@ -21,29 +23,15 @@ spec:
         description: TLS Verify
         type: string
         default: "false"
-      - name: base-version
-        description: Base product version
-        type: string
-        default: "1.0"
   results:
-    - name: timestamp
-      description: Current timestamp
     - name: buildId
       description: BuildId                     
   steps:
-    - name: get-timestamp
-      image: bash:latest
-      script: |
-        #!/usr/bin/env bash
-        ts=`date "+%Y%m%d-%H%M%S"`
-        echo "Current Timestamp: ${ts}"
-        echo ${ts} | tee $(results.timestamp.path)
     - name: get-buildid
       image: bash:latest
       script: |
         #!/usr/bin/env bash
-        ts=`cat $(results.timestamp.path)`
-        buildId=$(inputs.params.base-version)-${ts}
+        buildId=`cat $(inputs.resources.build-id.path)`
         echo ${buildId} | tee $(results.buildId.path)
         echo "Build ID: ${buildId}"  
     - name: list-project-folder
