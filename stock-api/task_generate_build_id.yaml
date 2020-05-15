@@ -11,7 +11,7 @@ spec:
         default: "1.0"
   outputs:
      resources:
-       - name: generated-build-id
+       - name: build-id
          type: storage   
   results:
     - name: timestamp
@@ -33,5 +33,5 @@ spec:
         ts=`cat $(results.timestamp.path)`
         buildId=$(inputs.params.base-version)-${ts}
         echo ${buildId} | tee $(results.buildId.path)
-        echo ${buildId} > /workspace/outputs/generated-build-id
+        echo ${buildId} > /workspace/outputs/build-id
         echo "Build ID: ${buildId}"  
