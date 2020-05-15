@@ -3,19 +3,20 @@ kind: Pipeline
 metadata:
   name: pipeline-build-and-deploy-stock-api-service
 spec:
+  params:
+    - name: service-base-version
+      type: string
   resources:
     - name: source-repo
       type: git
-    - name: service-base-version
-      type: string
   tasks:
     - name: get-build-id-stock-api
       taskRef:
         name: generate-build-id
-      resources:
+      params:
         inputs:
           - name: base-version
-            resource: service-base-version
+            param: service-base-version
     - name: build-stock-api
       taskRef:
         name: build-stock-api-image
