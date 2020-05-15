@@ -6,6 +6,8 @@ spec:
   resources:
     - name: source-repo
       type: git
+    - name: service-base-version
+      type: string
   tasks:
     - name: get-build-id-stock-api
       taskRef:
@@ -13,7 +15,7 @@ spec:
       resources:
         inputs:
           - name: base-version
-            value: "1.0.1"
+            resource: service-base-version
     - name: build-stock-api
       taskRef:
         name: build-stock-api-image
