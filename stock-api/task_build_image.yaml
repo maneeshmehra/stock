@@ -20,18 +20,44 @@ spec:
       - name: tls-verify
         description: tls verify
         type: string
-        default: "false"             
+        default: "false"
+      - name: base-version
+        description: Base product version
+        type: string
+        default: "1.0"
+  results:
+    - name: timestamp
+      description: Current timestamp
+    - name: buildId
+      description: BuildId                     
   steps:
+    - name: get-timestamp
+      image: bash:latest
+      script: |
+        #!/usr/bin/env bash
+        ts=`date "+%Y%m%d-%H%M%S"`
+        echo "Current Timestamp: ${ts}"
+        echo ${ts} | tee $(results.timestamp.path)
+    - name: get-buildid
+      image: bash:latest
+      script: |
+        #!/usr/bin/env bash
+        ts=`cat $(results.timestamp.path)`
+        buildId=$(inputs.params.base-version)-${ts}
+        echo ${buildId} | tee $(results.buildId.path)
+        echo "Build ID: ${buildId}"  
     - name: list-project-folder
       image: busybox
       command: ["ls", "-ltr", "/workspace/source/$(inputs.params.context-dir)"]
-    - name: check-if-maven-is-installed-or-not
-      image: docker.io/maven:3.6.3-openjdk-15
-      command: ["mvn", "--version"]
     - name: build-jar-file
       image: docker.io/maven:3.6.3-openjdk-15
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
-      command: ["mvn", "clean", "package", "-DskipTests"]
+      script: |
+         #!/usr/bin/env bash
+         buildId=`cat $(results.buildId.path)`
+         cmd="mvn -DbuildId=${buildId} -DskipTests -ntp clean package"
+         echo "Command: ${cmd}"
+         ${cmd}
     - name: list-project-folder-after-build
       image: quay.io/buildah/stable
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
@@ -81,7 +107,7 @@ spec:
         - "--storage-driver=vfs"
         - "--tls-verify=$(inputs.params.tls-verify)"
         - "$(inputs.params.container-image):latest"
-        - "docker://docker.io/mmehra/${input.params.container-image}:latest"
+        - "docker://docker.io/mmehra/${inputs.params.container-image}:latest"
       securityContext:
         runAsUser: 0
         privileged: true
