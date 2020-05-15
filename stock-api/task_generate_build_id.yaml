@@ -8,15 +8,12 @@ spec:
       - name: base-version
         description: Base product version
         type: string
-        default: "1.0"
-  outputs:
-     resources:
-       - name: build-id   
+        default: "1.0" 
   results:
     - name: timestamp
       description: Current timestamp
-    - name: buildId
-      description: BuildId                     
+    - name: build-id
+      description: ID of the current build                 
   steps:
     - name: get-timestamp
       image: bash:latest
@@ -31,6 +28,5 @@ spec:
         #!/usr/bin/env bash
         ts=`cat $(results.timestamp.path)`
         buildId=$(inputs.params.base-version)-${ts}
-        echo ${buildId} | tee $(results.buildId.path)
-        echo ${buildId} > /workspace/outputs/build-id
+        echo ${buildId} | tee $(results.build-id.path)
         echo "Build ID: ${buildId}"  

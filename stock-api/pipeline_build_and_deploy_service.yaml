@@ -15,19 +15,14 @@ spec:
         name: generate-build-id
       params:  
         - name: base-version
-          value: $(params.service-version)
-      resources:
-        outputs:
-          - name: build-id
-            resource: build-id          
+          value: $(params.service-version)       
     - name: build-stock-api
       taskRef:
         name: build-stock-api-image
+      params:
+        name: build-id
+        value: "$(tasks.get-build-id-stock-api.build-id)"  
       resources:
         inputs:
-          - name: build-id
-            resource: build-id
-            from:
-              - get-build-id-stock-api
           - name: source
-            resource: source-repo
+            resource: source-repo              

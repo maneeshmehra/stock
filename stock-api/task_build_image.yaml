@@ -7,7 +7,6 @@ spec:
     resources:
       - name: source
         type: git
-      - name: build-id 
     params:
       - name: context-dir
         description: The context dir of the project containing the Maven pom.xml file
@@ -22,17 +21,15 @@ spec:
         description: TLS Verify
         type: string
         default: "false"
-  results:
-    - name: buildId
-      description: BuildId                     
+      - name: build-id
+        description: ID of the current build
+        type: string                     
   steps:
     - name: get-buildid
       image: bash:latest
       script: |
         #!/usr/bin/env bash
-        buildId=`cat $(inputs.resources.build-id.path)`
-        echo ${buildId} | tee $(results.buildId.path)
-        echo "Build ID: ${buildId}"  
+        echo "Build ID: $(inputs.params.build-id)"  
     - name: list-project-folder
       image: busybox
       command: ["ls", "-ltr", "/workspace/source/$(inputs.params.context-dir)"]
@@ -41,7 +38,7 @@ spec:
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       script: |
          #!/usr/bin/env bash
-         buildId=`cat $(results.buildId.path)`
+         buildId=$(inputs.params.build-id)
          cmd="mvn -DbuildId=${buildId} -DskipTests -ntp clean package"
          echo "Command: ${cmd}"
          ${cmd}    
@@ -50,7 +47,7 @@ spec:
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       script: |
         #!/usr/bin/env bash
-        buildId=`cat $(results.buildId.path)`
+        buildId=$(inputs.params.build-id)
         cd /workspace/source/$(inputs.params.context-dir)
         buildah bud --tls-verify=$(inputs.params.tls-verify) \
           --layers --storage-driver=vfs \
@@ -84,7 +81,7 @@ spec:
       workingDir: "/workspace/source/$(inputs.params.context-dir)"
       script: |
         #!/usr/bin/env bash
-        buildId=`cat $(results.buildId.path)`
+        buildId=$(inputs.params.build-id)
         buildah push \
         --storage-driver=vfs \
         --tls-verify=$(inputs.params.tls-verify) \
