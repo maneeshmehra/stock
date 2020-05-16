@@ -24,7 +24,7 @@ spec:
         #!/usr/bin/env bash
         echo "Image Requested For Deployment: $(inputs.params.image-name)"
     - name: update-deployment-yaml
-      image: bash:latest
+      image: alpine
       script: |
         #!/usr/bin/env bash
         deploymentFile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.deployment-file)
