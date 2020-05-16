@@ -28,7 +28,11 @@ spec:
       script: |
         #!/usr/bin/env bash
         deploymentFile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.deployment-file)
-        sed -i -e "s;__IMAGE_NAME__;$(inputs.params.image-name);g" ${deploymentFile}
+        echo "Deployment File: ${deploymentFile}"
+        imageName="$(inputs.params.image-name)"
+        command="sed -i -e \"s@__IMAGE_NAME__@${imageName}@g\" ${deploymentFile}"
+        echo "Sed Command: ${command}"
+        `${command}`
         cat ${deploymentFile}
     - name: run-kubectl
       image: lachlanevenson/k8s-kubectl
