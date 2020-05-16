@@ -14,6 +14,9 @@ spec:
       - name: docker-file
         description: Name of the Docker file to use
         default: Dockerfile
+      - name: container-repo
+        description: Name of the container repo to use
+        default: mmehra 
       - name: container-image
         description: Name of the container image to use
         default: stock-api
@@ -23,7 +26,10 @@ spec:
         default: "false"
       - name: build-id
         description: ID of the current build
-        type: string                     
+        type: string
+  results:
+    - name: image-name
+      description: Name of the container image                           
   steps:
     - name: get-buildid
       image: bash:latest
@@ -82,11 +88,13 @@ spec:
       script: |
         #!/usr/bin/env bash
         buildId=$(inputs.params.build-id)
+        imageName="$(inputs.params.container-repo):${buildId}/$(inputs.params.container-image):${buildId}"
         buildah push \
         --storage-driver=vfs \
         --tls-verify=$(inputs.params.tls-verify) \
         $(inputs.params.container-image):${buildId} \
-        docker://docker.io/mmehra/$(inputs.params.container-image):${buildId}
+        docker://docker.io/${imageName}
+        echo ${imageName} | tee $(results.image-name.path)
       securityContext:
         runAsUser: 0
         privileged: true

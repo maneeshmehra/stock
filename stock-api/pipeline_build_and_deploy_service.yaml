@@ -25,4 +25,10 @@ spec:
       resources:
         inputs:
           - name: source
-            resource: source-repo              
+            resource: source-repo
+    - name: deploy-stock-api
+      taskRef:
+        name: deploy-stock-api-image
+      params:
+        - name: image-name
+          value: "$(tasks.build-stock-api.results.image-name)"                          
