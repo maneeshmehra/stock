@@ -32,7 +32,7 @@ spec:
         imageName="$(inputs.params.image-name)"
         imageName=${imageName%$'\n'}
         echo "Image Being Deployed: ${imageName}"
-        command="sed -i -e \"s@__IMAGE_NAME__@${imageName}@g\" ${deploymentFile}"
+        command="sed -i \"s@__IMAGE_NAME__@${imageName}@g\" ${deploymentFile}"
         echo "Sed Command: ${command}"
         `${command}`
         cat ${deploymentFile}
