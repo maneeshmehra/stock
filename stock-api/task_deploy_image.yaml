@@ -24,13 +24,12 @@ spec:
         #!/usr/bin/env bash
         echo "Image For Deployment: $(inputs.params.image-name)"
     - name: update-deployment-yaml
-      image: alpine
-      command: ["sed"]
-      args:
-        - "-i"
-        - "-e"
-        - "s;__IMAGE_NAME__;$(inputs.params.image-name);g"
-        - "/workspace/source/$(inputs.params.context-dir)/$(inputs.params.deployment-file)"
+      image: bash:latest
+      script: |
+        #!/usr/bin/env bash
+        deploymentFile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.deployment-file)
+        sed -i -e "s;__IMAGE_NAME__;$(inputs.params.image-name);g" ${deploymentFile}
+        cat ${deploymentFile}
     - name: run-kubectl
       image: lachlanevenson/k8s-kubectl
       command: ["kubectl"]
