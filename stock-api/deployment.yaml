@@ -18,9 +18,8 @@ spec:
         app: stock-api
     spec:
       containers:
-      - image: stock-api
+      - image: __IMAGE_NAME__
         name: stock-api
-        imagePullPolicy: Never
         resources: {}
         ports:
           - containerPort: 8080

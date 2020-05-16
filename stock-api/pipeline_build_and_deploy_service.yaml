@@ -31,4 +31,8 @@ spec:
         name: deploy-stock-api-image
       params:
         - name: image-name
-          value: "$(tasks.build-stock-api.results.image-name)"                          
+          value: "$(tasks.build-stock-api.results.image-name)"
+      resources:
+        inputs:
+          - name: source
+            resource: source-repo                             
