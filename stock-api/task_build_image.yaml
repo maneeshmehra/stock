@@ -88,7 +88,7 @@ spec:
       script: |
         #!/usr/bin/env bash
         buildId=$(inputs.params.build-id)
-        imageName="$(inputs.params.container-repo):${buildId}/$(inputs.params.container-image):${buildId}"
+        imageName="$(inputs.params.container-repo)/$(inputs.params.container-image):${buildId}"
         buildah push \
         --storage-driver=vfs \
         --tls-verify=$(inputs.params.tls-verify) \
