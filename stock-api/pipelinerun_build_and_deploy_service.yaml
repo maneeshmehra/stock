@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   name: pipelinerun-build-and-deploy-stock-api-service
 spec:
+  serviceAccountName: stock-api-service-account
   pipelineRef:
     name: pipeline-build-and-deploy-stock-api-service
   params:
