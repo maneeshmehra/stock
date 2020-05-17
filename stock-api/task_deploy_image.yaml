@@ -24,9 +24,12 @@ spec:
         #!/usr/bin/env bash
         echo "Image Requested For Deployment: $(inputs.params.image-name)"
     - name: update-deployment-yaml
-      image: alpine
+      image: bash:latest
       script: |
         #!/usr/bin/env bash
+        which sed
+        whuch yum
+        yum install -y sed
         deploymentFile=/workspace/source/$(inputs.params.context-dir)/$(inputs.params.deployment-file)
         echo "Deployment File: ${deploymentFile}"
         imageName="$(inputs.params.image-name)"
