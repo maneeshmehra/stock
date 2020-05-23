@@ -18,6 +18,6 @@ The following guides illustrate how to use some features concretely:
 * Create a service account
   kubectl create serviceaccount stock-api-service-account
 * Create a new role called stock-api-service-role:
-  kubectl create clusterrole stock-api-service-role --verb=* --resource=deployments,deployments.apps
+  kubectl create clusterrole stock-api-service-role --verb=* --resource=deployments,deployments.apps,services
 * Next, assign this new role to your ServiceAccount:
   kubectl create clusterrolebinding stock-api-service-binding --clusterrole=stock-api-service-role --serviceaccount=default:stock-api-service-account
